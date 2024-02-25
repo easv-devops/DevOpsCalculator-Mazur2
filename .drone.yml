@@ -19,7 +19,11 @@ steps:
       SONARTOKEN:
         from_secret: SonarToken
     commands:
-      - dotnet sonarscanner begin /k:"easv-devops_DevOpsCalculator-Mazur_AY3h9yCGEVvRW2O60EL4" /d:sonar.host.url="http://sonar.setgo.dk:9000"  /d:sonar.token="$SONARTOKEN"
-      - dotnet build
+      - dotnet sonarscanner begin /k:"easv-devops_DevOpsCalculator-Mazur_AY3h9yCGEVvRW2O60EL4" 
+          /d:sonar.host.url="http://sonar.setgo.dk:9000"  
+          /d:sonar.token="$SONARTOKEN"
+          /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
+      - dotnet build --no-incremental
+      - dotnet-coverage collect "dotnet test" -f xml -o "coverage.xml"
       - dotnet sonarscanner end /d:sonar.token="$SONARTOKEN"
 
