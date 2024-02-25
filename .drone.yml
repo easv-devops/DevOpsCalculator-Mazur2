@@ -19,7 +19,7 @@ steps:
       SONARTOKEN:
         from_secret: SonarToken
     commands:
-      - dotnet sonarscanner begin /k:"easv-devops_CalculatorExercise_AY3f5nvSEVvRW2O60EID" /d:sonar.host.url="http://sonar.setgo.dk:9000"  /d:sonar.token="$SONARTOKEN"
+      - dotnet sonarscanner begin /k:"easv-devops_DevOpsCalculator-Mazur_AY3h9yCGEVvRW2O60EL4" /d:sonar.host.url="http://sonar.setgo.dk:9000"  /d:sonar.token="$SONARTOKEN"
       - dotnet build
       - dotnet sonarscanner end /d:sonar.token="$SONARTOKEN"
 
