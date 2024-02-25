@@ -1,0 +1,14 @@
+﻿services:
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: calc
+    ports:
+      - "5432:5432"
+  devopscalculator:
+    image: mm007mm/devopscalculator
+    build:
+      context: .
+      dockerfile: DevOpsCalculator/Dockerfile
