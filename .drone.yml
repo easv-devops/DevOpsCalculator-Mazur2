@@ -17,9 +17,9 @@ steps:
     image: boulundeasv/dotnet-sdk-with-java
     environment:
       SONAR_TOKEN:
-        from_secret: SONAR_TOKEN
+        from_secret: SonarToken
       SONAR_HOST_URL:
-        from_secret: SONAR_HOST_URL
+        from_secret: SonarHostUrl
     commands:
       - dotnet sonarscanner begin /k:"easv-devops_CalculatorExercise_AY3f5nvSEVvRW2O60EID" /d:sonar.host.url="$SONAR_HOST_URL"  /d:sonar.token="$SONAR_TOKEN"
       - dotnet build
