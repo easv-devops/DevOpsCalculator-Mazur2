@@ -24,7 +24,7 @@ while (input != "Q")
     Console.WriteLine("Enter the second number:");
     n2 = double.Parse(Console.ReadLine() ?? string.Empty);
 
-    calculationService.PerformCalculation(n1, n2, input.ToUpper());
+    calculationService.PerformCalculation(n1, n2, input?.ToUpper() ?? "");
 
     input = WriteWelcomeScreen();
 }

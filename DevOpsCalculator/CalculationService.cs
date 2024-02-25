@@ -4,8 +4,8 @@ namespace DevOpsCalculator;
 
 public class CalculationService
 {
-    private Calculator _calculator;
-    private AppDbContext _context;
+    private readonly Calculator _calculator;
+    private readonly AppDbContext _context;
 
     public CalculationService(AppDbContext context, Calculator calculator)
     {

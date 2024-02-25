@@ -88,8 +88,8 @@ public class CalculationServiceTests
     }
     
     [Theory]
-    [InlineData(4, 2, "X", 2)]
-    public void TestPerformCalculation_InvalidOperation(double n1, double n2, string operation, double expectedResult)
+    [InlineData(4, 2, "X")]
+    public void TestPerformCalculation_InvalidOperation(double n1, double n2, string operation)
     {
         Exception ex = Assert.Throws<ArgumentException>(() => _calculationService.PerformCalculation(n1, n2, operation));
 
