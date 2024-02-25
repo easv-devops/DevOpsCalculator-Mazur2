@@ -87,6 +87,15 @@ public class CalculationServiceTests
         Assert.Equal(expectedResult, record.Result);
     }
     
+    [Theory]
+    [InlineData(4, 2, "X", 2)]
+    public void TestPerformCalculation_InvalidOperation(double n1, double n2, string operation, double expectedResult)
+    {
+        Exception ex = Assert.Throws<ArgumentException>(() => _calculationService.PerformCalculation(n1, n2, operation));
+
+        Assert.Equal("Invalid operation: X", ex.Message);
+    }
+    
     [Fact]
     public void TestGetCalculationsHistory()
     {
