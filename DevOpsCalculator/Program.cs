@@ -1,50 +1,30 @@
 ﻿using DevOpsCalculator;
 using Microsoft.EntityFrameworkCore;
 
-var dbContext = new AppDbContext();
+var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
+optionsBuilder.UseNpgsql("Host=db;Port=5432;Database=calc;Username=root;Password=password");
+var dbContext = new AppDbContext(optionsBuilder.Options);
 dbContext.Database.EnsureCreated();
 var calculator = new Calculator();
+var calculationService = new CalculationService(dbContext, calculator);
 
 var input = WriteWelcomeScreen();
 while (input != "Q")
 {
-    double n1, n2, result;
+    if (input == "H")
+    {
+        calculationService.ShowHistory();
+        continue;
+    }
+
+    double n1, n2;
     // Get the numbers
     Console.WriteLine("Enter the first number:");
     n1 = double.Parse(Console.ReadLine() ?? string.Empty);
     Console.WriteLine("Enter the second number:");
     n2 = double.Parse(Console.ReadLine() ?? string.Empty);
 
-    switch (input.ToUpper())
-    {
-        case "A":
-            result = calculator.Add(n1, n2);
-            dbContext.CalculationRecords.Add(new CalculationRecord(n1, n2, "+", result));
-            Console.WriteLine($"Result: {result}");
-            break;
-        case "S":
-            result = calculator.Subtract(n1, n2);
-            dbContext.CalculationRecords.Add(new CalculationRecord(n1, n2, "-", result));
-            Console.WriteLine($"Result: {result}");
-            break;
-        case "M":
-            result = calculator.Multiply(n1, n2);
-            dbContext.CalculationRecords.Add(new CalculationRecord(n1, n2, "*", result));
-            Console.WriteLine($"Result: {result}");
-            break;
-        case "D":
-            result = calculator.Divide(n1, n2);
-            dbContext.CalculationRecords.Add(new CalculationRecord(n1, n2, "/", result));
-            Console.WriteLine($"Result: {result}");
-            break;
-        case "H":
-            ShowHistory(dbContext);
-            break;
-        default:
-            Console.WriteLine("Invalid input. Please try again.");
-            break;
-    }
-    dbContext.SaveChanges();
+    calculationService.PerformCalculation(n1, n2, input.ToUpper());
 
     input = WriteWelcomeScreen();
 }
@@ -71,25 +51,14 @@ string? WriteWelcomeScreen()
     return Console.ReadLine();
 }
 
-void ShowHistory(AppDbContext db)
-{
-    foreach (var record in db.CalculationRecords)
-    {
-        Console.WriteLine($"ID: {record.Id}, Operator1: {record.Operand1}, Operator2: {record.Operand2}, Operator: {record.Operator}, Result: {record.Result}");
-    }
-}
-
-
 #region Data
 
 public class AppDbContext : DbContext
 {
     public DbSet<CalculationRecord> CalculationRecords { get; set; } = default!;
-    
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseNpgsql("Host=db;Port=5432;Database=calc;Username=root;Password=password");
-    }
+
+    public AppDbContext(DbContextOptions<AppDbContext> options)
+        : base(options) { }
 }
 
 public class CalculationRecord
