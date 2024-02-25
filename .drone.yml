@@ -16,7 +16,7 @@ steps:
   - name: Static code analysis
     image: boulundeasv/dotnet-sdk-with-java
     commands:
-      - dotnet sonarscanner begin /k:"easv-devops_CalculatorExercise_AY3f5nvSEVvRW2O60EID" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}"  /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+      - dotnet sonarscanner begin /k:"easv-devops_CalculatorExercise_AY3f5nvSEVvRW2O60EID" /d:sonar.host.url="$SONAR_HOST_URL"  /d:sonar.token="$SONAR_TOKEN"
       - dotnet build
-      - dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+      - dotnet sonarscanner end /d:sonar.token="$SONAR_TOKEN"
 
